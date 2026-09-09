@@ -539,47 +539,23 @@
     </section>
 
 
-    <!-- キャンペーン -->
-    <section class="section campaign-section">
+  <!-- キャンペーン -->
+<section class="section campaign-section">
 
-      <div class="section-title campaign-title">
-        <span class="icon">🎁</span>
-        <span>開催中・開催予定のキャンペーン</span>
+  <div class="section-title campaign-title">
+    <span class="icon">🎁</span>
+    <span>開催中・開催予定のキャンペーン</span>
+  </div>
+
+  <div id="campaignList">
+    <div class="campaign-card">
+      <div style="text-align:center; padding:20px;">
+        キャンペーンを読み込んでいます...
       </div>
+    </div>
+  </div>
 
-      <div class="campaign-card">
-
-        <div class="campaign-placeholder">
-
-          <div class="campaign-placeholder-inner">
-
-            <div class="campaign-date">
-              9月16日(水)～9月18日(金) 開催
-            </div>
-
-            <div class="campaign-big">
-              PREMIUM大抽選会
-            </div>
-
-            <div class="campaign-name">
-              DOKOTOクラブ会員様限定キャンペーン
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="campaign-info">
-          9月16日(水)～9月18日(金)
-        </div>
-
-        <a href="#" class="detail-button">
-          キャンペーン詳細を見る ＞
-        </a>
-
-      </div>
-
-    </section>
+</section>
 
 
     <!-- お知らせ -->
@@ -597,6 +573,48 @@
 </div>
 
 <script>
+  function loadCampaigns(data) {
+
+    const campaignList = document.getElementById("campaignList");
+
+    if (!data || !data.success || !data.campaigns) {
+      campaignList.innerHTML = "";
+      return;
+    }
+
+    if (data.campaigns.length === 0) {
+      campaignList.innerHTML = "";
+      return;
+    }
+
+    campaignList.innerHTML = "";
+
+    data.campaigns.forEach(function(item) {
+
+      const card = document.createElement("div");
+      card.className = "campaign-card";
+
+      card.innerHTML =
+        '<img src="' + item.imageUrl + '" ' +
+        'alt="キャンペーン" ' +
+        'style="display:block; width:100%; height:auto; border-radius:8px;">';
+
+      campaignList.appendChild(card);
+    });
+  }
+
+  const campaignScript = document.createElement("script");
+
+  campaignScript.src =
+    "https://script.google.com/macros/s/AKfycby37uzZTlp5Os6xG_YosHm3NTG5Qx06EJEqgudnwT4j7IZT9WDNa46uwQdumfMKIYv3/exec?mode=campaigns&callback=loadCampaigns";
+
+  document.body.appendChild(campaignScript);
+</script>
+
+
+      
+<script>
+
   function loadNews(data) {
 
     const newsList = document.getElementById("newsList");

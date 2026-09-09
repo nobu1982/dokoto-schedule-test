@@ -581,6 +581,31 @@
   }
 </script> 
 
+<!-- お知らせ自動取得テスト -->
+<div class="auto-news-test">
+  <h3>自動取得テスト</h3>
+  <div id="autoNewsResult">取得中...</div>
+</div>
+
+<script>
+  fetch("https://tachikawa.dokoto.jp/news")
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("HTTPエラー: " + response.status);
+      }
+      return response.text();
+    })
+    .then(html => {
+      document.getElementById("autoNewsResult").innerHTML =
+        "✅ 元サイトのデータ取得に成功しました。<br>" +
+        "取得文字数：" + html.length;
+    })
+    .catch(error => {
+      document.getElementById("autoNewsResult").innerHTML =
+        "❌ 直接取得できませんでした。<br>" +
+        error.message;
+    });
+</script>
   
 </body>
 </html>

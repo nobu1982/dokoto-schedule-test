@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>たちかわ競輪 DOKOTOクラブ スケジュール</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #eef7fc;
+      color: #333;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Noto Sans JP",
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        Meiryo,
+        sans-serif;
+    }
+
+    /* ページ全体 */
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      background: #fff;
+      min-height: 100vh;
+    }
+
+    /* ヘッダー */
+    .header {
+      background: linear-gradient(135deg, #0878c9, #0054a6);
+      color: #fff;
+      text-align: center;
+      padding: 28px 20px 25px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      top: -100px;
+      right: -70px;
+    }
+
+    .header-small {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      position: relative;
+    }
+
+    .header-title {
+      margin: 5px 0 0;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      position: relative;
+    }
+
+    .header-sub {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      position: relative;
+    }
+
+    /* セクション */
+    .section {
+      margin: 16px 12px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 3px 12px rgba(0, 80, 140, 0.10);
+      border: 1px solid #e5eef5;
+    }
+
+    .section-title {
+      padding: 15px 18px;
+      font-size: 21px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .section-title .icon {
+      font-size: 27px;
+    }
+
+    /* スケジュール */
+    .schedule-section {
+      background: #f5fbff;
+    }
+
+    .schedule-title {
+      color: #075ca8;
+    }
+
+    .month {
+      margin-left: auto;
+      background: #0878c9;
+      color: #fff;
+      border-radius: 20px;
+      padding: 7px 13px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .schedule-image-wrap {
+      margin: 0 12px 14px;
+      padding: 8px;
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid #d9e5ed;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+
+    .schedule-placeholder {
+      min-height: 230px;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          #fff,
+          #fff 31px,
+          #d9d9d9 32px
+        );
+      border: 1px solid #999;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .schedule-placeholder::before {
+      content: "2026年9月　DOKOTOクラブ キャンペーンスケジュール予定";
+      display: block;
+      padding: 8px;
+      background: #eee;
+      font-size: 11px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .schedule-placeholder::after {
+      content: "スケジュール画像をここに表示";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 105px;
+      text-align: center;
+      color: #888;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .tap-message {
+      margin: 0 16px 16px;
+      padding: 10px;
+      text-align: center;
+      background: #dcefff;
+      color: #075ca8;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* キャンペーン */
+    .campaign-section {
+      background: #fff8fa;
+    }
+
+    .campaign-title {
+      color: #d52b55;
+    }
+
+    .campaign-card {
+      margin: 0 12px 16px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px;
+      border: 1px solid #f0d5dc;
+    }
+
+    .campaign-placeholder {
+      width: 100%;
+      aspect-ratio: 1.45 / 1;
+      background: linear-gradient(135deg, #7c4300, #e8bd35, #6c3600);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      padding: 20px;
+      font-weight: 900;
+    }
+
+    .campaign-placeholder-inner {
+      border: 2px solid rgba(255,255,255,0.7);
+      padding: 15px;
+      width: 100%;
+    }
+
+    .campaign-date {
+      font-size: 15px;
+    }
+
+    .campaign-big {
+      margin-top: 7px;
+      font-size: 25px;
+      color: #fff600;
+      text-shadow: 1px 1px 3px #333;
+    }
+
+    .campaign-name {
+      margin-top: 5px;
+      font-size: 13px;
+    }
+
+    .campaign-info {
+      padding: 10px 4px 2px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .detail-button {
+      display: block;
+      margin-top: 9px;
+      padding: 13px;
+      border-radius: 10px;
+      text-align: center;
+      background: #e8325a;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    /* お知らせ */
+    .news-section {
+      background: #f5fff8;
+    }
+
+    .news-title {
+      color: #167844;
+    }
+
+    .news-list {
+      margin: 0 12px 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid #dce9df;
+    }
+
+    .news-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 10px;
+      border-bottom: 1px solid #e5e5e5;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .news-item:last-child {
+      border-bottom: none;
+    }
+
+    .news-date {
+      font-size: 11px;
+      color: #777;
+      white-space: nowrap;
+    }
+
+    .news-category {
+      background: #e1f1ff;
+      color: #0878c9;
+      border-radius: 15px;
+      padding: 4px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .news-text {
+      flex: 1;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .news-arrow {
+      color: #0878c9;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .all-news {
+      margin: 0 12px 16px;
+      display: block;
+      padding: 12px;
+      background: #20a45b;
+      color: #fff;
+      text-align: center;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    /* フッター */
+    .footer {
+      margin-top: 25px;
+      padding: 28px 20px;
+      background: #dff2ff;
+      text-align: center;
+      color: #075ca8;
+    }
+
+    .footer-logo {
+      font-size: 21px;
+      font-weight: 900;
+    }
+
+    .footer-text {
+      margin-top: 5px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* スマホ */
+    @media (max-width: 600px) {
+
+      .header {
+        padding: 23px 15px 21px;
+      }
+
+      .header-small {
+        font-size: 13px;
+      }
+
+      .header-title {
+        font-size: 27px;
+      }
+
+      .header-sub {
+        font-size: 12px;
+      }
+
+      .section {
+        margin: 12px 8px;
+        border-radius: 15px;
+      }
+
+      .section-title {
+        padding: 13px 14px;
+        font-size: 18px;
+      }
+
+      .section-title .icon {
+        font-size: 23px;
+      }
+
+      .month {
+        font-size: 12px;
+        padding: 6px 9px;
+      }
+
+      .schedule-placeholder {
+        min-height: 200px;
+      }
+
+      .campaign-big {
+        font-size: 21px;
+      }
+
+      .news-item {
+        padding: 12px 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page">
+
+    <!-- ヘッダー -->
+    <header class="header">
+      <div class="header-small">たちかわ競輪</div>
+      <div class="header-title">DOKOTOクラブ<br>スケジュール</div>
+      <div class="header-sub">
+        開催スケジュール・キャンペーン・お知らせ
+      </div>
+    </header>
+
+
+    <!-- スケジュール -->
+    <section class="section schedule-section">
+
+      <div class="section-title schedule-title">
+        <span class="icon">📅</span>
+        <span>今月の開催スケジュール</span>
+        <span class="month">2026年9月</span>
+      </div>
+
+      <div class="schedule-image-wrap">
+
+        <div class="schedule-placeholder">
+        </div>
+
+      </div>
+
+      <div class="tap-message">
+        🔍 スケジュール画像をタップすると拡大してご覧いただけます
+      </div>
+
+    </section>
+
+
+    <!-- キャンペーン -->
+    <section class="section campaign-section">
+
+      <div class="section-title campaign-title">
+        <span class="icon">🎁</span>
+        <span>開催中・開催予定のキャンペーン</span>
+      </div>
+
+      <div class="campaign-card">
+
+        <div class="campaign-placeholder">
+
+          <div class="campaign-placeholder-inner">
+
+            <div class="campaign-date">
+              9月16日(水)～9月18日(金) 開催
+            </div>
+
+            <div class="campaign-big">
+              PREMIUM大抽選会
+            </div>
+
+            <div class="campaign-name">
+              DOKOTOクラブ会員様限定キャンペーン
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="campaign-info">
+          9月16日(水)～9月18日(金)
+        </div>
+
+        <a href="#" class="detail-button">
+          キャンペーン詳細を見る ＞
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- お知らせ -->
+    <section class="section news-section">
+
+      <div class="section-title news-title">
+        <span class="icon">📢</span>
+        <span>DOKOTOクラブからのお知らせ</span>
+      </div>
+
+      <div class="news-list">
+
+        <a href="#" class="news-item">
+          <span class="news-date">9月10日</span>
+          <span class="news-category">キャンペーン・イベント</span>
+          <span class="news-text">9月10日～13日の開催情報について</span>
+          <span class="news-arrow">›</span>
+        </a>
+
+        <a href="#" class="news-item">
+          <span class="news-date">9月9日</span>
+          <span class="news-category">キャンペーン・イベント</span>
+          <span class="news-text">9月16日～18日 PREMIUM大抽選会</span>
+          <span class="news-arrow">›</span>
+        </a>
+
+        <a href="#" class="news-item">
+          <span class="news-date">9月4日</span>
+          <span class="news-category">キャンペーン・イベント</span>
+          <span class="news-text">令和8年度下半期 DOKOTOクラブ</span>
+          <span class="news-arrow">›</span>
+        </a>
+
+        <a href="#" class="news-item">
+          <span class="news-date">9月1日</span>
+          <span class="news-category">キャンペーン・イベント</span>
+          <span class="news-text">【9月】ラッキーチャレンジ開催</span>
+          <span class="news-arrow">›</span>
+        </a>
+
+        <a href="#" class="news-item">
+          <span class="news-date">8月31日</span>
+          <span class="news-category">キャンペーン・イベント</span>
+          <span class="news-text">2026年9月 DOKOTOクラブ</span>
+          <span class="news-arrow">›</span>
+        </a>
+
+      </div>
+
+      <a href="#" class="all-news">
+        すべてのお知らせを見る ＞
+      </a>
+
+    </section>
+
+
+    <!-- フッター -->
+    <footer class="footer">
+      <div class="footer-logo">DOKOTOクラブ</div>
+      <div class="footer-text">たちかわ競輪 DOKOTOクラブ</div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

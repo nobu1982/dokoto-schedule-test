@@ -7,6 +7,21 @@
   <title>たちかわ競輪 DOKOTOクラブ スケジュール</title>
 
   <style>
+
+.news-iframe-wrap {
+  margin: 0 12px 16px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #dce9df;
+}
+
+.news-iframe-wrap iframe {
+  width: 100%;
+  height: 700px;
+  border: 0;
+}
+    
     * {
       box-sizing: border-box;
     }
@@ -524,41 +539,14 @@
 
       <div class="news-list">
 
-        <a href="#" class="news-item">
-          <span class="news-date">9月10日</span>
-          <span class="news-category">キャンペーン・イベント</span>
-          <span class="news-text">9月10日～13日の開催情報について</span>
-          <span class="news-arrow">›</span>
-        </a>
-
-        <a href="#" class="news-item">
-          <span class="news-date">9月9日</span>
-          <span class="news-category">キャンペーン・イベント</span>
-          <span class="news-text">9月16日～18日 PREMIUM大抽選会</span>
-          <span class="news-arrow">›</span>
-        </a>
-
-        <a href="#" class="news-item">
-          <span class="news-date">9月4日</span>
-          <span class="news-category">キャンペーン・イベント</span>
-          <span class="news-text">令和8年度下半期 DOKOTOクラブ</span>
-          <span class="news-arrow">›</span>
-        </a>
-
-        <a href="#" class="news-item">
-          <span class="news-date">9月1日</span>
-          <span class="news-category">キャンペーン・イベント</span>
-          <span class="news-text">【9月】ラッキーチャレンジ開催</span>
-          <span class="news-arrow">›</span>
-        </a>
-
-        <a href="#" class="news-item">
-          <span class="news-date">8月31日</span>
-          <span class="news-category">キャンペーン・イベント</span>
-          <span class="news-text">2026年9月 DOKOTOクラブ</span>
-          <span class="news-arrow">›</span>
-        </a>
-
+        <div class="news-iframe-wrap">
+  <iframe
+    src="https://tachikawa.dokoto.jp/news"
+    title="DOKOTOクラブ お知らせ"
+    loading="lazy">
+  </iframe>
+</div>
+       
       </div>
 
       <a href="#" class="all-news">

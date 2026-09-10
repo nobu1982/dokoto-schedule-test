@@ -573,35 +573,118 @@
 </div>
 
 <script>
+
+<script>
   function loadCampaigns(data) {
 
     const campaignList = document.getElementById("campaignList");
 
-    if (!data || !data.success || !data.campaigns) {
+    if (!data || !data.success || !data.campaigns || data.campaigns.length === 0) {
       campaignList.innerHTML = "";
       return;
     }
 
-    if (data.campaigns.length === 0) {
-      campaignList.innerHTML = "";
-      return;
+    const campaigns = data.campaigns;
+
+    // キャンペーンカード
+    const card = document.createElement("div");
+    card.className = "campaign-card";
+    card.style.position = "relative";
+    card.style.overflow = "hidden";
+
+    // 画像
+    const image = document.createElement("img");
+    image.src = campaigns[0].imageUrl;
+    image.alt = "キャンペーン";
+    image.style.display = "block";
+    image.style.width = "100%";
+    image.style.height = "auto";
+    image.style.borderRadius = "8px";
+    image.style.transition = "opacity 0.2s ease";
+
+    card.appendChild(image);
+
+    // 2件以上ある場合だけ切り替え機能を追加
+    if (campaigns.length > 1) {
+
+      let currentIndex = 0;
+      let startX = 0;
+      let endX = 0;
+
+      // ドット表示
+      const dots = document.createElement("div");
+      dots.style.textAlign = "center";
+      dots.style.padding = "8px 0 2px";
+
+      campaigns.forEach(function(item, index) {
+
+        const dot = document.createElement("span");
+
+        dot.textContent = index === 0 ? "●" : "○";
+        dot.style.fontSize = "14px";
+        dot.style.margin = "0 4px";
+        dot.style.cursor = "pointer";
+
+        dot.addEventListener("click", function() {
+          currentIndex = index;
+          image.src = campaigns[currentIndex].imageUrl;
+
+          const allDots = dots.querySelectorAll("span");
+
+          allDots.forEach(function(d, i) {
+            d.textContent = i === currentIndex ? "●" : "○";
+          });
+        });
+
+        dots.appendChild(dot);
+      });
+
+      // 左右スワイプ
+      image.addEventListener("touchstart", function(e) {
+        startX = e.touches[0].clientX;
+      }, { passive: true });
+
+      image.addEventListener("touchend", function(e) {
+
+        endX = e.changedTouches[0].clientX;
+
+        const difference = endX - startX;
+
+        // 左へスワイプ
+        if (difference < -50) {
+          currentIndex++;
+
+          if (currentIndex >= campaigns.length) {
+            currentIndex = 0;
+          }
+        }
+
+        // 右へスワイプ
+        if (difference > 50) {
+          currentIndex--;
+
+          if (currentIndex < 0) {
+            currentIndex = campaigns.length - 1;
+          }
+        }
+
+        image.src = campaigns[currentIndex].imageUrl;
+
+        const allDots = dots.querySelectorAll("span");
+
+        allDots.forEach(function(d, i) {
+          d.textContent = i === currentIndex ? "●" : "○";
+        });
+
+      }, { passive: true });
+
+      card.appendChild(dots);
     }
 
     campaignList.innerHTML = "";
-
-    data.campaigns.forEach(function(item) {
-
-      const card = document.createElement("div");
-      card.className = "campaign-card";
-
-      card.innerHTML =
-        '<img src="' + item.imageUrl + '" ' +
-        'alt="キャンペーン" ' +
-        'style="display:block; width:100%; height:auto; border-radius:8px;">';
-
-      campaignList.appendChild(card);
-    });
+    campaignList.appendChild(card);
   }
+
 
   const campaignScript = document.createElement("script");
 
@@ -610,7 +693,6 @@
 
   document.body.appendChild(campaignScript);
 </script>
-
 
       
 <script>

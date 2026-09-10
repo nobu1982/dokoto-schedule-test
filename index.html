@@ -700,33 +700,6 @@
     document.getElementById("scheduleModal").classList.remove("show");
   }
 </script> 
-
-<!-- Apps Script お知らせ連動テスト -->
-<div class="auto-news-test">
-  <h3>Apps Script連動テスト</h3>
-  <div id="autoNewsResult">取得中...</div>
-</div>
-
-<script>
-  function showNewsTest(data) {
-    if (data && data.success) {
-      document.getElementById("autoNewsResult").innerHTML =
-        "✅ Apps Scriptから取得成功<br>" +
-        "取得件数：" + data.count + "件<br>" +
-        "最新：" + data.news[0].title;
-    } else {
-      document.getElementById("autoNewsResult").innerHTML =
-        "❌ 取得できませんでした";
-    }
-  }
-
-  const script = document.createElement("script");
-
-  script.src =
-    "https://script.google.com/macros/s/AKfycby37uzZTlp5Os6xG_YosHm3NTG5Qx06EJEqgudnwT4j7IZT9WDNa46uwQdumfMKIYv3/exec?callback=showNewsTest";
-
-  document.body.appendChild(script);
-</script>
-  
+ 
 </body>
 </html>

@@ -566,100 +566,66 @@
 
     let currentIndex = 0;
     let startX = 0;
-
-    // 画像URLを先読み
-    schedules.forEach(function(item, index) {
-
-      if (index === 0) return;
-
-      const preload = new Image();
-      preload.src = item.imageUrl;
-
-    });
-
-    // ドットを最初に一度だけ作成
-    dots.innerHTML = "";
-
-    if (schedules.length > 1) {
-
-      schedules.forEach(function(item, index) {
-
-        const dot = document.createElement("span");
-
-        dot.textContent =
-          index === 0 ? "●" : "○";
-
-        dot.style.fontSize = "14px";
-        dot.style.margin = "0 4px";
-        dot.style.cursor = "pointer";
-
-        dot.addEventListener("click", function() {
-          showSchedule(index);
-        });
-
-        dots.appendChild(dot);
-      });
-    }
+    let endX = 0;
 
     function showSchedule(index) {
 
       currentIndex = index;
 
-      const targetMonth =
-        schedules[currentIndex].targetMonth;
+      image.src = schedules[currentIndex].imageUrl;
 
-      // 月表示を先に変更
+      const targetMonth = schedules[currentIndex].targetMonth;
+
       month.textContent =
         targetMonth.replace("/", "年") + "月";
 
-      // 表示画像を変更
-      image.src =
-        schedules[currentIndex].imageUrl;
+      dots.innerHTML = "";
 
-      // ドットだけ更新
-      const allDots =
-        dots.querySelectorAll("span");
+      if (schedules.length > 1) {
 
-      allDots.forEach(function(dot, i) {
+        schedules.forEach(function(item, index) {
 
-        dot.textContent =
-          i === currentIndex ? "●" : "○";
+          const dot = document.createElement("span");
 
-      });
+          dot.textContent =
+            index === currentIndex ? "●" : "○";
+
+          dot.style.fontSize = "14px";
+          dot.style.margin = "0 4px";
+          dot.style.cursor = "pointer";
+
+          dot.addEventListener("click", function() {
+            showSchedule(index);
+          });
+
+          dots.appendChild(dot);
+        });
+      }
 
       // 拡大表示用画像も現在の画像に合わせる
       const modalImage =
         document.querySelector("#scheduleModal img");
 
       if (modalImage) {
-
-        modalImage.src =
-          schedules[currentIndex].imageUrl;
-
+        modalImage.src = schedules[currentIndex].imageUrl;
         modalImage.alt =
-          targetMonth +
-          " DOKOTOクラブ キャンペーンスケジュール";
+          targetMonth + " DOKOTOクラブ キャンペーンスケジュール";
       }
     }
 
-    // 最初の画像をすぐ表示
+    // 初期表示
     showSchedule(0);
 
     // 左右スワイプ
     image.addEventListener("touchstart", function(e) {
-
-      startX =
-        e.touches[0].clientX;
-
+      startX = e.touches[0].clientX;
     }, { passive: true });
 
     image.addEventListener("touchend", function(e) {
 
-      const endX =
-        e.changedTouches[0].clientX;
+      endX = e.changedTouches[0].clientX;
 
-      const difference =
-        endX - startX;
+      const difference = endX - startX;
 
       if (difference < -50) {
 
@@ -684,12 +650,10 @@
       }
 
     }, { passive: true });
-
   }
 
 
-  const scheduleScript =
-    document.createElement("script");
+  const scheduleScript = document.createElement("script");
 
   scheduleScript.src =
     "https://script.google.com/macros/s/AKfycby37uzZTlp5Os6xG_YosHm3NTG5Qx06EJEqgudnwT4j7IZT9WDNa46uwQdumfMKIYv3/exec?mode=schedules&callback=loadSchedules";

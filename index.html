@@ -832,7 +832,7 @@
 
     newsList.innerHTML = "";
 
-    data.news.forEach(function(item) {
+    data.news.slice(0, 3).forEach(function(item) {
 
       const newsItem = document.createElement("a");
 
@@ -874,7 +874,7 @@
   document.body.appendChild(newsScript);
 </script>
 
-      <a href="#" class="all-news">
+     <a href="https://tachikawa.dokoto.jp/news" class="all-news" target="_blank" rel="noopener noreferrer">
         すべてのお知らせを見る ＞
       </a>
 

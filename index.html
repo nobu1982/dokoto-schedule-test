@@ -512,25 +512,154 @@
     </header>
 
 
-    <!-- スケジュール -->
-    <section class="section schedule-section">
+  <!-- スケジュール -->
+<section class="section schedule-section">
 
-      <div class="section-title schedule-title">
-        <span class="icon">📅</span>
-        <span>今月の開催スケジュール</span>
-        <span class="month">2026年9月</span>
-      </div>
+  <div class="section-title schedule-title">
+    <span class="icon">📅</span>
+    <span>開催スケジュール</span>
+    <span class="month" id="scheduleMonth">読み込み中...</span>
+  </div>
 
-      <div class="schedule-image-wrap">
+  <div class="schedule-image-wrap">
 
-  <img
-  src="schedule-2026-09.png"
-  alt="2026年9月 DOKOTOクラブ キャンペーンスケジュール"
-  class="schedule-image"
-  onclick="openScheduleImage()"
->
+    <img
+      id="scheduleImage"
+      src=""
+      alt="DOKOTOクラブ キャンペーンスケジュール"
+      class="schedule-image"
+      onclick="openScheduleImage()"
+    >
 
-</div>
+  </div>
+
+  <div id="scheduleDots"
+       style="text-align:center; padding:0 0 8px;">
+  </div>
+
+  <div class="tap-message">
+    🔍 スケジュール画像をタップすると拡大してご覧いただけます（再度タップすると元の画面に戻ります）<br>
+    👈👉 左右にスワイプしてスケジュールを切り替えられます
+  </div>
+
+</section>
+
+<script>
+
+  function loadSchedules(data) {
+
+    if (
+      !data ||
+      !data.success ||
+      !data.schedules ||
+      data.schedules.length === 0
+    ) {
+      return;
+    }
+
+    const schedules = data.schedules;
+
+    const image = document.getElementById("scheduleImage");
+    const month = document.getElementById("scheduleMonth");
+    const dots = document.getElementById("scheduleDots");
+
+    let currentIndex = 0;
+    let startX = 0;
+    let endX = 0;
+
+    function showSchedule(index) {
+
+      currentIndex = index;
+
+      image.src = schedules[currentIndex].imageUrl;
+
+      const targetMonth = schedules[currentIndex].targetMonth;
+
+      month.textContent =
+        targetMonth.replace("/", "年") + "月";
+
+      dots.innerHTML = "";
+
+      if (schedules.length > 1) {
+
+        schedules.forEach(function(item, index) {
+
+          const dot = document.createElement("span");
+
+          dot.textContent =
+            index === currentIndex ? "●" : "○";
+
+          dot.style.fontSize = "14px";
+          dot.style.margin = "0 4px";
+          dot.style.cursor = "pointer";
+
+          dot.addEventListener("click", function() {
+            showSchedule(index);
+          });
+
+          dots.appendChild(dot);
+        });
+      }
+
+      // 拡大表示用画像も現在の画像に合わせる
+      const modalImage =
+        document.querySelector("#scheduleModal img");
+
+      if (modalImage) {
+        modalImage.src = schedules[currentIndex].imageUrl;
+        modalImage.alt =
+          targetMonth + " DOKOTOクラブ キャンペーンスケジュール";
+      }
+    }
+
+    // 初期表示
+    showSchedule(0);
+
+    // 左右スワイプ
+    image.addEventListener("touchstart", function(e) {
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    image.addEventListener("touchend", function(e) {
+
+      endX = e.changedTouches[0].clientX;
+
+      const difference = endX - startX;
+
+      if (difference < -50) {
+
+        currentIndex++;
+
+        if (currentIndex >= schedules.length) {
+          currentIndex = 0;
+        }
+
+        showSchedule(currentIndex);
+      }
+
+      if (difference > 50) {
+
+        currentIndex--;
+
+        if (currentIndex < 0) {
+          currentIndex = schedules.length - 1;
+        }
+
+        showSchedule(currentIndex);
+      }
+
+    }, { passive: true });
+  }
+
+
+  const scheduleScript = document.createElement("script");
+
+  scheduleScript.src =
+    "https://script.google.com/macros/s/AKfycby37uzZTlp5Os6xG_YosHm3NTG5Qx06EJEqgudnwT4j7IZT9WDNa46uwQdumfMKIYv3/exec?mode=schedules&callback=loadSchedules";
+
+  document.body.appendChild(scheduleScript);
+
+</script>
 
       <div class="tap-message">
         🔍 スケジュール画像をタップすると拡大してご覧いただけます（再度タップすると元の画面に戻ります）
